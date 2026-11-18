@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="100%" role="img" aria-labelledby="heroTitle heroDesc">
   <title id="heroTitle">miyo-deepseek-import — turn a DeepSeek export zip into the chat archive Miyo already reads</title>
-  <desc id="heroDesc">Left: project name, one-line value, and a scale line of 1,000+ conversations, about a hundred attachments, 22 MB. Right: a DeepSeek chat_sessions JSON filename converting into a Miyo chat Markdown filename ending in a short id.</desc>
+  <desc id="heroDesc">Left: project name, one-line value, and a scale line counting conversations and output size. Right: a DeepSeek chat_sessions JSON filename converting into a Miyo chat Markdown filename ending in a short id.</desc>
   <defs>
     <marker id="heroArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M2 1L8 5L2 9" fill="none" stroke="#4D6BFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

@@ -114,8 +114,8 @@ belongs upstream rather than in a workaround that breaks on the next update.
 
 ## Tested on
 
-Miyo 0.4.3 on Windows, one export of 1,000+ conversations: 22 MB of Markdown
-and about a hundred attachments across 38 MB.
+Miyo 0.4.3 on Windows, one export of about a thousand conversations: roughly
+22 MB of Markdown, plus the attachments the export carried.
 
 ## License
 
