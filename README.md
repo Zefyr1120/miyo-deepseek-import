@@ -1,42 +1,12 @@
-# miyo-deepseek-import
+<p align="center">
+  <img src="./assets/readme/hero.svg" width="100%" alt="miyo-deepseek-import — point it at a DeepSeek export zip and get the chat archive Miyo already reads">
+</p>
 
-Convert a DeepSeek data export into [Miyo](https://miyo.md)'s chat-markdown layout.
+DeepSeek's account export is a folder of JSON that nothing can open. This turns
+it into one Markdown file per conversation, in the same shape Miyo writes for
+ChatGPT and Claude: frontmatter, turn markers, timestamps, attachment links.
 
-Miyo archives ChatGPT and Claude conversations as one Markdown file per
-conversation, with a frontmatter block and a `## Turn` section per exchange.
-DeepSeek isn't supported yet, so its official account export — a zip of JSON —
-can't be read there at all. This script writes that export in the same shape,
-one file per conversation, so the result reads like any other chat archive
-instead of a pile of raw JSON.
-
-## Requirements
-
-Python 3.9 or newer. No third-party packages.
-
-## Usage
-
-Export your data from DeepSeek: **Settings → Data → Export**, then download the
-resulting `deepseek_data-YYYY-MM-DD.zip`.
-
-```bash
-python deepseek_export_to_miyo.py deepseek_data-YYYY-MM-DD.zip "./DeepSeek chats"
-```
-
-A trial run first is worth it:
-
-```bash
-python deepseek_export_to_miyo.py deepseek_data-YYYY-MM-DD.zip "./DeepSeek chats" --limit 5
-```
-
-| Option | Effect |
-|---|---|
-| `--limit N` | convert only the first N conversations |
-| `--no-attachments` | skip file copying entirely |
-| `--quiet` | suppress per-file output |
-
-The source can also be an already-extracted directory instead of the zip.
-
-## Output
+## What it produces
 
 ```
 DeepSeek chats/
@@ -47,8 +17,6 @@ DeepSeek chats/
         ├── packet-capture.png
         └── api-notes.pdf
 ```
-
-Each file:
 
 ```markdown
 ---
@@ -66,16 +34,40 @@ updated_at: 2026-03-14T09:41:55.108000+00:00
 
 **User · 2026-03-14 02:19:03**
 
-...first message...
+...your message...
 
 **Assistant · 2026-03-14 02:19:09**
 
-...reply...
+...the reply...
 ```
 
-Timestamps are rendered in UTC, matching what Miyo writes for the sources it
-already supports. The filename is `<date> <title> (<8 chars of id>).md`, so a
-conversation can be found on disk without opening it.
+The filename is `<date> <title> (<8 chars of id>).md`, so a conversation can be
+found on disk without opening it. Timestamps are UTC, matching what Miyo writes
+for the sources it already supports.
+
+## Usage
+
+Export from DeepSeek first: **Settings → Data → Export**, then download the
+`deepseek_data-YYYY-MM-DD.zip`.
+
+```bash
+python3 deepseek_export_to_miyo.py deepseek_data-YYYY-MM-DD.zip "./DeepSeek chats"
+```
+
+A trial run first is worth it:
+
+```bash
+python3 deepseek_export_to_miyo.py deepseek_data-YYYY-MM-DD.zip "./DeepSeek chats" --limit 5
+```
+
+Python 3.9 or newer, standard library only. The source can also be an
+already-extracted directory instead of the zip.
+
+| Option | Effect |
+|---|---|
+| `--limit N` | convert only the first N conversations |
+| `--no-attachments` | skip file copying entirely |
+| `--quiet` | suppress per-file output |
 
 ## What gets converted
 
@@ -86,7 +78,7 @@ is why a conversation shows up once rather than once per abandoned retry.
 
 **Typed fragments, filtered.** DeepSeek splits a message into fragments with a
 `type` field. `REQUEST`, `RESPONSE` and `TEMPLATE_RESPONSE` become body text.
-`THINK` is dropped — reasoning traces aren't part of the conversation as
+`THINK` is dropped: reasoning traces aren't part of the conversation as
 presented, and Miyo's other chat sources don't carry them either. Attachment
 fragments (`FILE`) become links. Everything else, including tool calls and
 search results, is skipped rather than dumped as raw JSON.
@@ -107,10 +99,10 @@ Attachments the export references but doesn't include are marked
 
 The output is plain Markdown in a folder, and Miyo indexes it as a **document
 folder**. Its own chat sources carry an `origin` marker in the index manifest
-that routes them into a separate `chats` collection — a folder without that
+that routes them into a separate `chats` collection: a folder without that
 marker answers `--source files` rather than `--source chats`.
 
-Registering a third chat platform has to happen on Miyo's side: the
+Registering a third chat platform has to happen on Miyo's side. The
 `chat_platform` field only accepts `chatgpt` and `claude_ai` today, so an
 imported source can't be labelled as a conversation source at all. That's what
 [issue #68](https://github.com/Brevilabs/miyo-releases/issues/68) asks for, and
@@ -122,8 +114,8 @@ belongs upstream rather than in a workaround that breaks on the next update.
 
 ## Tested on
 
-Miyo 0.4.3 on Windows. One export of 1,000+ conversations, 22 MB of Markdown,
-about a hundred attachments across 38 MB.
+Miyo 0.4.3 on Windows, one export of 1,000+ conversations: 22 MB of Markdown
+and about a hundred attachments across 38 MB.
 
 ## License
 
